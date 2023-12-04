@@ -32,6 +32,15 @@ export default function Home() {
     }, 1500);
   };
 
+  // useEffect(() => {
+  //   const code = new URLSearchParams(window.location.search).get('code');
+
+  //   if (code) {
+  //     // Exchange the code for a token
+  //     getToken(code);
+  //   }
+  // }, []);
+
   return (
     <div className="centered">
       <Stack direction="column" alignItems="center" justifyContent="center">

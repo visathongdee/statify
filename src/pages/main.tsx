@@ -7,6 +7,7 @@ import {
   Typography,
   List,
   ListItem,
+  AppBar,
 } from "@mui/material";
 import "../style.css";
 import SpotifyIcon from "../assets/spotify icon.png";
@@ -18,6 +19,7 @@ import {
   Artist,
 } from "../backend/spotifyFetch";
 import { useNavigate } from "react-router";
+import MyAppBar from "./appbar";
 
 import { ChartData as ChartJsData } from "chart.js";
 
@@ -44,8 +46,8 @@ export default function Main() {
   }, []);
 
   useEffect(() => {
-    fetchTopTracks();
-    fetchTopArtists();
+    fetchTopTracks("long_term");
+    fetchTopArtists("long_term");
   }, []);
 
   const moreArtistsClick = () => {
@@ -60,9 +62,27 @@ export default function Main() {
     navigate("/genres");
   };
 
-  const fetchTopTracks = async () => {
+  const mainClick = () => {
+    navigate("/main");
+  };
+
+  const handleDisconnect = () => {
+    let beforetoken = localStorage.getItem("access_token");
+    console.log("token:", beforetoken);
+
+    localStorage.clear();
+
+    let token = localStorage.getItem("access_token");
+    console.log("token:", token);
+
+    console.log("disconnected");
+
+    navigate("/main");
+  };
+
+  const fetchTopTracks = async (timeRange: string) => {
     try {
-      const tracks = await getTopTracks();
+      const tracks = await getTopTracks(timeRange);
       setTopTracks(tracks);
       console.log("tracks:", tracks);
     } catch (error) {
@@ -70,9 +90,9 @@ export default function Main() {
     }
   };
 
-  const fetchTopArtists = async () => {
+  const fetchTopArtists = async (timeRange: string) => {
     try {
-      const artists = await getTopArtists();
+      const artists = await getTopArtists(timeRange);
       setTopArtists(artists);
       console.log("artists:", artists);
     } catch (error) {
@@ -92,10 +112,10 @@ export default function Main() {
               width="100%"
               spacing={5}
             >
-              <h1 className="card-text-title">Top 5 Tracks</h1>
+              <h1 className="card-text-title">Top Tracks of All Time</h1>
               <Button
                 className="see-more-button"
-                onClick={moreArtistsClick}
+                onClick={moreTracksClick}
                 variant="outlined"
                 style={{
                   textTransform: "none",
@@ -123,7 +143,7 @@ export default function Main() {
             direction="column"
             alignItems="space-between"
             justifyContent="space-between"
-            spacing={2}
+            spacing={5}
             className="card-content-stack"
           >
             {topTracks.slice(0, 5).map((track) => (
@@ -154,7 +174,7 @@ export default function Main() {
         <Box className="main-boxes">
           <Box className="main-title-box">
             <Stack className="main-title-stack" direction="row" spacing={5}>
-              <h1 className="card-text-title">Top 5 Artists</h1>
+              <h1 className="card-text-title">Top Artists of All Time</h1>
               <Button
                 className="see-more-button"
                 onClick={moreArtistsClick}
@@ -183,9 +203,7 @@ export default function Main() {
           </Box>
           <Stack
             direction="column"
-            // alignItems="space-between"
             justifyContent="space-between"
-            // spacing={5}
             className="card-content-stack"
           >
             {topArtists.slice(0, 5).map((artist) => (
@@ -204,63 +222,6 @@ export default function Main() {
             ))}
           </Stack>
         </Box>
-      </>
-    );
-  };
-
-  const getBar = () => {
-    return (
-      <>
-        <Box sx={{ borderBottom: 1.5, borderColor: "black", width: "100%" }} />
-        <Stack
-          direction="row"
-          width="100%"
-          justifyContent="space-between"
-          marginInline="2%"
-          // marginBlock="2%"
-          margin="1%"
-        >
-          <Button
-            className="see-more-button"
-            onClick={moreArtistsClick}
-            style={{
-              textTransform: "none",
-              color: "black",
-              fontSize: "18px",
-              fontWeight: "400",
-              paddingInline: "3%",
-            }}
-          >
-            Top Artists
-          </Button>
-          <Button
-            className="see-more-button"
-            onClick={moreTracksClick}
-            style={{
-              textTransform: "none",
-              color: "black",
-              fontSize: "18px",
-              fontWeight: "400",
-              paddingInline: "3%",
-            }}
-          >
-            Top Tracks
-          </Button>
-          <Button
-            className="see-more-button"
-            onClick={moreGenresClick}
-            style={{
-              textTransform: "none",
-              color: "black",
-              fontSize: "18px",
-              fontWeight: "400",
-              paddingInline: "3%",
-            }}
-          >
-            Top Genres
-          </Button>
-        </Stack>
-        <Box sx={{ borderBottom: 1.5, borderColor: "black", width: "100%" }} />
       </>
     );
   };
@@ -287,6 +248,7 @@ export default function Main() {
           },
         }}
         disableElevation
+        onClick={handleDisconnect}
       >
         <Stack direction="row" spacing={2}>
           <img
@@ -307,16 +269,13 @@ export default function Main() {
         position: "absolute",
       }}
     >
+      <MyAppBar />
       <Stack
         direction="column"
         alignItems="center"
         justifyContent="center"
         margin="5%"
       >
-        <div style={{ alignSelf: "start", width: "100%" }}>
-          <h1 style={{ margin: "2%", textAlign: "left" }}>Statify</h1>
-        </div>
-        {getBar()}
         <Grid className="main-grid-container" container spacing={2}>
           <Grid className="main-grid-item" item xs={12} md={6}>
             {getTopTracksComp()}
