@@ -1,14 +1,24 @@
 export type Artist = {
   name: string;
+  genres: string[];
 };
 
 export type Track = {
+  id: string;
   name: string;
   artists: Artist[];
 };
 
+export type Genres = {
+  genre: string;
+};
+
 export type SpotifyApiTracksResponse = {
   items: Track[];
+};
+
+export type SpotifyApiArtistsResponse = {
+  items: Artist[];
 };
 
 async function fetchWebApi(endpoint: string, method: string): Promise<any> {
@@ -24,9 +34,11 @@ async function fetchWebApi(endpoint: string, method: string): Promise<any> {
 
 export async function getTopTracks(): Promise<Track[]> {
   const response: SpotifyApiTracksResponse = await fetchWebApi(
-    "v1/me/top/tracks?time_range=long_term&limit=5",
+    "v1/me/top/tracks?time_range=long_term&limit=10",
     "GET"
   );
+
+  //   console.log(response.items);
   return response.items;
 }
 
@@ -42,11 +54,31 @@ export async function logTopTracks(): Promise<void> {
   );
 }
 
-// export async function getTopArtists(): Promise<Artist[]> {
-//   const response: SpotifyApiTracksResponse = await fetchWebApi(
-//     "v1/me/top/artists",
+export async function getTopArtists(): Promise<Artist[]> {
+  const response: SpotifyApiArtistsResponse = await fetchWebApi(
+    // "v1/me/top/artists?time_range=long_term&limit=5",
+    "v1/me/top/artists",
+    "GET"
+  );
+  console.log(response.items);
+  return response.items;
+}
+
+// const getTrackIds = tracks => tracks.map(({ track }) => track.id).join(',');
+
+/**
+ * Get a Playlist's Tracks
+ * https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlists-tracks/
+ */
+// export async function getTracks(): Promise<Artist[]> {
+//   const response: SpotifyApiArtistsResponse = await fetchWebApi(
+//     // "v1/me/top/artists?time_range=long_term&limit=5",
+//     `https://api.spotify.com/v1/tracks/${trackId}`,
 //     "GET"
 //   );
 //   console.log(response.items);
 //   return response.items;
 // }
+
+// export const getPlaylistTracks = playlistId =>
+//   const .get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, { headers });

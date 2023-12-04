@@ -18,7 +18,7 @@ import { ChartData as ChartJsData } from "chart.js";
 
 type ChartData = ChartJsData<"pie", number[], string>;
 
-export default function Main() {
+export default function Artists() {
   const [topTracks, setTopTracks] = useState<Track[]>([]);
   const [topArtists, setTopArtists] = useState<Artist[]>([]);
   const [topGenres, setTopGeneres] = useState<string[]>([]);
@@ -43,19 +43,8 @@ export default function Main() {
   }, []);
 
   useEffect(() => {
-    fetchTopTracks();
     fetchTopArtists();
   }, []);
-
-  const fetchTopTracks = async () => {
-    try {
-      const tracks = await getTopTracks();
-      setTopTracks(tracks);
-      console.log("tracks:", tracks);
-    } catch (error) {
-      console.error("Error fetching top tracks:", error);
-    }
-  };
 
   const fetchTopArtists = async () => {
     try {
@@ -67,39 +56,6 @@ export default function Main() {
     }
   };
 
-  const getTopTracksComp = () => {
-    return (
-      <>
-        <Stack
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          margin="5%"
-          spacing={5}
-          width={"100%"}
-        >
-          <Stack direction="row" spacing={5}>
-            <h1>Your Top 5 Tracks</h1>
-            <Button>See More</Button>
-          </Stack>
-          {topTracks.slice(0, 5).map((track) => (
-            <Stack
-              key={track.name}
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              // margin="5%"
-              spacing={1}
-            >
-              <h2>{track.name}</h2>
-              <h3>{track.artists.map((artist) => artist.name).join(", ")}</h3>
-            </Stack>
-          ))}
-        </Stack>
-      </>
-    );
-  };
-
   const getTopArtistsComp = () => {
     return (
       <>
@@ -109,13 +65,8 @@ export default function Main() {
           justifyContent="center"
           margin="5%"
           spacing={5}
-          width={"100%"}
         >
-          <Stack direction="row" spacing={5}>
-            <h1>Your Top 5 Artists</h1>
-            <Button>See More</Button>
-          </Stack>
-          {topArtists.slice(0, 5).map((artist) => (
+          {topArtists.slice(0, 10).map((artist) => (
             <Stack
               key={artist.name}
               direction="column"
@@ -128,39 +79,6 @@ export default function Main() {
           ))}
         </Stack>
       </>
-    );
-  };
-
-  const getDisconnectButton = () => {
-    return (
-      <Button
-        variant="outlined"
-        style={{
-          textTransform: "none",
-          borderColor: "black",
-        }}
-        sx={{
-          bgcolor: "lightGreen",
-          color: "black",
-          fontSize: "18px",
-          fontWeight: "400",
-          paddingY: "2px",
-          paddingX: "10px",
-          borderColor: "black",
-          "&:hover": {
-            backgroundColor: "#6cbd72",
-          },
-        }}
-        disableElevation
-      >
-        <Stack direction="row" spacing={2}>
-          <img
-            src={SpotifyIcon}
-            style={{ height: "20px", marginTop: "5%", marginRight: "8px" }}
-          />
-          disconnect from spotify
-        </Stack>
-      </Button>
     );
   };
 
@@ -178,14 +96,11 @@ export default function Main() {
         justifyContent="center"
         margin="5%"
       >
-        <h1 style={{ margin: 0 }}>Your Spotify Data</h1>
+        <h1 style={{ margin: 0 }}>Your Top 5 Artists</h1>
 
-        <Stack direction="row" alignItems="start" width="100%">
-          {getTopTracksComp()}
-          {getTopArtistsComp()}
-        </Stack>
+        {getTopArtistsComp()}
+        <PieChart chartData={pieData} artistToGenres={artistGenres} />
       </Stack>
-      {getDisconnectButton()}
     </div>
   );
 }

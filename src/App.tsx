@@ -6,6 +6,9 @@ import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
 import Main from "./pages/main";
 
 import Home from "./pages/homepage";
+import Tracks from "./pages/tracks";
+import Artists from "./pages/artists";
+import Genres from "./pages/genres";
 
 //import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 //import { Theme } from "./frontend/pages/theme";
@@ -20,6 +23,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/main" element={<Main />} />
+          <Route path="/tracks" element={<Tracks />} />
+          <Route path="/artists" element={<Artists />} />
+          <Route path="/genres" element={<Genres />} />
         </Routes>
       </Router>
     </div>
