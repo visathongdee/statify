@@ -19,3 +19,84 @@ h1 {
 h3 {
   font-weight: 400;
 }
+
+.main-grid-container {
+  width: min-content;
+  /* margin: 10%; */
+}
+
+.main-grid-item {
+  /* margin: 10%; */
+  display: flex;
+  /* align-items: flex-start;  */
+  justify-content: center;
+  width: 100%;
+  /* margin: 10%; */
+}
+
+.main-boxes {
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+  width: 100%;
+  /* margin-top: 5%; */
+  margin: 5%;
+  overflow: visible;
+}
+
+.card-content-stack {
+  height: 80%;
+  width: 100%;
+  padding: 5%;
+  /* overflow: auto; */
+}
+
+.see-more-button {
+  text-transform: "none";
+  /* border-radius: "25px"; */
+  /* border-color: "black"; */
+  color: "black";
+  font-size: "18px";
+  font-weight: "400";
+  /* padding-block: "2px";
+  padding-inline: "10px"; */
+  /* width: 100%; */
+  white-space: nowrap;
+}
+
+.main-title-box {
+  border-color: black;
+  width: 100%;
+  padding: 5%;
+  border-bottom: 2px solid black;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+}
+
+.main-title-stack {
+  direction: "row";
+  justify-content: "space-between";
+  align-items: "center";
+  width: "100%";
+}
+
+.card-text-title {
+  font-size: 1.5em;
+  text-align: left;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.card-text-content {
+  font-size: 1.25em;
+  text-align: left;
+  width: 100%;
+  margin: 5%;
+}
+
+.card-subtext-content {
+  font-size: 1em;
+  text-align: left;
+  color: gray;
+}

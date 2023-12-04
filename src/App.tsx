@@ -9,6 +9,8 @@ import Home from "./pages/homepage";
 import Tracks from "./pages/tracks";
 import Artists from "./pages/artists";
 import Genres from "./pages/genres";
+import { AppBar } from "@mui/material";
+import ResponsiveAppBar from "./pages/appbar";
 
 //import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 //import { Theme } from "./frontend/pages/theme";
@@ -20,6 +22,7 @@ function App() {
   return (
     <div className="App">
       <Router>
+        {/* <ResponsiveAppBar /> */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/main" element={<Main />} />

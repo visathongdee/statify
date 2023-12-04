@@ -1,29 +1,32 @@
 import * as React from "react";
-import { Stack, Button } from "@mui/material";
+import {
+  Stack,
+  Button,
+  Grid,
+  Box,
+  Typography,
+  List,
+  ListItem,
+} from "@mui/material";
 import "../style.css";
 import SpotifyIcon from "../assets/spotify icon.png";
 import { useEffect, useState } from "react";
 import {
-  logTopTracks,
   getTopArtists,
   getTopTracks,
   Track,
   Artist,
-  Genres,
 } from "../backend/spotifyFetch";
-import PieChart from "./pieChart";
-import { ArtistGenre } from "./pieChart";
+import { useNavigate } from "react-router";
 
 import { ChartData as ChartJsData } from "chart.js";
 
 type ChartData = ChartJsData<"pie", number[], string>;
 
 export default function Main() {
+  const navigate = useNavigate();
   const [topTracks, setTopTracks] = useState<Track[]>([]);
   const [topArtists, setTopArtists] = useState<Artist[]>([]);
-  const [topGenres, setTopGeneres] = useState<string[]>([]);
-  const [pieData, setPieData] = useState<ChartData>();
-  const [artistGenres, setArtistGenres] = useState<ArtistGenre[]>();
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -32,8 +35,6 @@ export default function Main() {
 
     if (accessToken) {
       localStorage.setItem("access_token", accessToken);
-
-      // clear the hash from the URL
       window.history.pushState(
         "",
         document.title,
@@ -46,6 +47,18 @@ export default function Main() {
     fetchTopTracks();
     fetchTopArtists();
   }, []);
+
+  const moreArtistsClick = () => {
+    navigate("/artists");
+  };
+
+  const moreTracksClick = () => {
+    navigate("/tracks");
+  };
+
+  const moreGenresClick = () => {
+    navigate("/genres");
+  };
 
   const fetchTopTracks = async () => {
     try {
@@ -70,32 +83,67 @@ export default function Main() {
   const getTopTracksComp = () => {
     return (
       <>
-        <Stack
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          margin="5%"
-          spacing={5}
-          width={"100%"}
-        >
-          <Stack direction="row" spacing={5}>
-            <h1>Your Top 5 Tracks</h1>
-            <Button>See More</Button>
-          </Stack>
-          {topTracks.slice(0, 5).map((track) => (
+        <Box className="main-boxes">
+          <Box className="main-title-box">
             <Stack
-              key={track.name}
-              direction="column"
+              direction="row"
+              justifyContent="space-between"
               alignItems="center"
-              justifyContent="center"
-              // margin="5%"
-              spacing={1}
+              width="100%"
+              spacing={5}
             >
-              <h2>{track.name}</h2>
-              <h3>{track.artists.map((artist) => artist.name).join(", ")}</h3>
+              <h1 className="card-text-title">Top 5 Tracks</h1>
+              <Button
+                className="see-more-button"
+                onClick={moreArtistsClick}
+                variant="outlined"
+                style={{
+                  textTransform: "none",
+                  borderRadius: "25px",
+                  borderColor: "black",
+                  color: "black",
+                  fontSize: "18px",
+                  fontWeight: "400",
+                  paddingBlock: "2px",
+                  paddingInline: "10px",
+                  width: "50%",
+                }}
+                sx={{
+                  bgcolor: "#7FD485",
+                  "&:hover": {
+                    backgroundColor: "#6cbd72",
+                  },
+                }}
+              >
+                See More
+              </Button>
             </Stack>
-          ))}
-        </Stack>
+          </Box>
+          <Stack
+            direction="column"
+            alignItems="space-between"
+            justifyContent="space-between"
+            spacing={2}
+            className="card-content-stack"
+          >
+            {topTracks.slice(0, 5).map((track) => (
+              <div style={{ alignSelf: "start", width: "100%" }}>
+                <Stack
+                  key={track.name}
+                  direction="column"
+                  alignItems="start"
+                  justifyContent="start"
+                  spacing={1}
+                >
+                  <h2 className="card-text-content">{track.name}</h2>
+                  <h3 className="card-subtext-content">
+                    {track.artists.map((artist) => artist.name).join(", ")}
+                  </h3>
+                </Stack>
+              </div>
+            ))}
+          </Stack>
+        </Box>
       </>
     );
   };
@@ -103,30 +151,116 @@ export default function Main() {
   const getTopArtistsComp = () => {
     return (
       <>
-        <Stack
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          margin="5%"
-          spacing={5}
-          width={"100%"}
-        >
-          <Stack direction="row" spacing={5}>
-            <h1>Your Top 5 Artists</h1>
-            <Button>See More</Button>
-          </Stack>
-          {topArtists.slice(0, 5).map((artist) => (
-            <Stack
-              key={artist.name}
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              spacing={1}
-            >
-              <h2>{artist.name}</h2>
+        <Box className="main-boxes">
+          <Box className="main-title-box">
+            <Stack className="main-title-stack" direction="row" spacing={5}>
+              <h1 className="card-text-title">Top 5 Artists</h1>
+              <Button
+                className="see-more-button"
+                onClick={moreArtistsClick}
+                variant="outlined"
+                style={{
+                  textTransform: "none",
+                  borderRadius: "25px",
+                  borderColor: "black",
+                  color: "black",
+                  fontSize: "18px",
+                  fontWeight: "400",
+                  paddingBlock: "2px",
+                  paddingInline: "10px",
+                  width: "50%",
+                }}
+                sx={{
+                  bgcolor: "#7FD485",
+                  "&:hover": {
+                    backgroundColor: "#6cbd72",
+                  },
+                }}
+              >
+                See More
+              </Button>
             </Stack>
-          ))}
+          </Box>
+          <Stack
+            direction="column"
+            // alignItems="space-between"
+            justifyContent="space-between"
+            // spacing={5}
+            className="card-content-stack"
+          >
+            {topArtists.slice(0, 5).map((artist) => (
+              <div style={{ alignSelf: "start", width: "100%" }}>
+                <Stack
+                  key={artist.name}
+                  direction="column"
+                  alignItems="start"
+                  justifyContent="start"
+                  spacing={1}
+                  sx={{ height: "100%", width: "100%", textAlign: "left" }}
+                >
+                  <h2 className="card-text-content">{artist.name}</h2>
+                </Stack>
+              </div>
+            ))}
+          </Stack>
+        </Box>
+      </>
+    );
+  };
+
+  const getBar = () => {
+    return (
+      <>
+        <Box sx={{ borderBottom: 1.5, borderColor: "black", width: "100%" }} />
+        <Stack
+          direction="row"
+          width="100%"
+          justifyContent="space-between"
+          marginInline="2%"
+          // marginBlock="2%"
+          margin="1%"
+        >
+          <Button
+            className="see-more-button"
+            onClick={moreArtistsClick}
+            style={{
+              textTransform: "none",
+              color: "black",
+              fontSize: "18px",
+              fontWeight: "400",
+              paddingInline: "3%",
+            }}
+          >
+            Top Artists
+          </Button>
+          <Button
+            className="see-more-button"
+            onClick={moreTracksClick}
+            style={{
+              textTransform: "none",
+              color: "black",
+              fontSize: "18px",
+              fontWeight: "400",
+              paddingInline: "3%",
+            }}
+          >
+            Top Tracks
+          </Button>
+          <Button
+            className="see-more-button"
+            onClick={moreGenresClick}
+            style={{
+              textTransform: "none",
+              color: "black",
+              fontSize: "18px",
+              fontWeight: "400",
+              paddingInline: "3%",
+            }}
+          >
+            Top Genres
+          </Button>
         </Stack>
+        <Box sx={{ borderBottom: 1.5, borderColor: "black", width: "100%" }} />
       </>
     );
   };
@@ -135,6 +269,7 @@ export default function Main() {
     return (
       <Button
         variant="outlined"
+        // className="connect-button"
         style={{
           textTransform: "none",
           borderColor: "black",
@@ -178,14 +313,20 @@ export default function Main() {
         justifyContent="center"
         margin="5%"
       >
-        <h1 style={{ margin: 0 }}>Your Spotify Data</h1>
-
-        <Stack direction="row" alignItems="start" width="100%">
-          {getTopTracksComp()}
-          {getTopArtistsComp()}
-        </Stack>
+        <div style={{ alignSelf: "start", width: "100%" }}>
+          <h1 style={{ margin: "2%", textAlign: "left" }}>Statify</h1>
+        </div>
+        {getBar()}
+        <Grid className="main-grid-container" container spacing={2}>
+          <Grid className="main-grid-item" item xs={12} md={6}>
+            {getTopTracksComp()}
+          </Grid>
+          <Grid className="main-grid-item" item xs={12} md={6}>
+            {getTopArtistsComp()}
+          </Grid>
+        </Grid>
       </Stack>
-      {getDisconnectButton()}
+      {/* {getDisconnectButton()} */}
     </div>
   );
 }
