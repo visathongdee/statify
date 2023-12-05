@@ -17,7 +17,8 @@ import MyAppBar from "./appbar";
 import html2canvas from "html2canvas";
 import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
-import { getTitleBox } from "./artists";
+import { getTimeRangeButtons, getTitleBox } from "./artists";
+import { EightBitLoader } from "react-loaders-kit";
 
 import { ChartData as ChartJsData } from "chart.js";
 
@@ -74,7 +75,7 @@ export default function TopGenres() {
     try {
       const artists = await getTopArtists(timeRange);
       setTopArtists(artists);
-      console.log("artists:", artists);
+      //   console.log("artists:", artists);
     } catch (error) {
       console.error("Error fetching top tracks:", error);
     }
@@ -97,7 +98,7 @@ export default function TopGenres() {
           spacing={2}
           className="card-content-stack"
         >
-          {topUniqueGenres.map((genre) => (
+          {topUniqueGenres.map((genre, i) => (
             <div style={{ alignSelf: "start", width: "100%" }}>
               <Stack
                 key={genre}
@@ -106,7 +107,9 @@ export default function TopGenres() {
                 justifyContent="start"
                 spacing={1}
               >
-                <h1 className="card-text-content">{genre}</h1>
+                <h1 className="card-text-content">
+                  {i + 1}. {genre}
+                </h1>
               </Stack>
             </div>
           ))}
@@ -139,9 +142,7 @@ export default function TopGenres() {
     });
 
     setArtistGenres(artistGenre);
-    console.log("artistGenre:", artistGenre);
 
-    // console.log(Object.keys(topGenresFreq));
     const sum = Object.values(topGenresFreq).reduce(
       (partialSum, a) => partialSum + a,
       0
@@ -156,26 +157,26 @@ export default function TopGenres() {
             return Math.round((value / sum) * 100) / 100;
           }),
           backgroundColor: [
-            "#f78ca0",
-            "#fddaa0",
-            "#b7e089",
-            "#c7aefb",
-            "#f7f79e",
-            "#b8b8b8",
+            "#f7b2b2",
             "#fbaed2",
             "#ffc1f3",
-            "#baf2a1",
+            "#dcbcff",
             "#d1b3ff",
-            "#e1e18e",
-            "#d1d1d1",
+            "#c7aefb",
+            "#b6b6d8",
+            "#a4d8f0",
             "#9cffff",
             "#b3f4ff",
+            "#f78ca0",
+            "#fddaa0",
             "#f3e1b6",
-            "#b6b6d8",
+            "#e1e18e",
+            "#f7f79e",
+            "#b7e089",
+            "#baf2a1",
             "#e5e5e5",
-            "#dcbcff",
-            "#f7b2b2",
-            "#a4d8f0",
+            "#d1d1d1",
+            "#b8b8b8",
           ],
           borderColor: "white",
         },
@@ -194,9 +195,10 @@ export default function TopGenres() {
             justifyContent="space-between"
             alignItems="center"
             width="100%"
+            textAlign="left"
             spacing={5}
           >
-            <h1 className="card-text-title">Top Genre Pie Chart</h1>
+            <h1 className="card-text-title">Genre Pie Chart</h1>
           </Stack>
         </Box>
         <PieChart chartData={pieData} artistToGenres={artistGenres} />
@@ -217,7 +219,7 @@ export default function TopGenres() {
         })
         .then(function (dataUrl) {
           var link = document.createElement("a");
-          link.download = "my-image-name.jpeg";
+          link.download = "my-top-genres.jpeg";
           link.href = dataUrl;
           link.click();
         })
@@ -227,30 +229,86 @@ export default function TopGenres() {
     }
   };
 
-  if (!loading && topArtists && topArtists.length > 0) {
-    return (
-      <div
-        style={{
-          height: "100%",
-          width: "100%",
-          position: "absolute",
-        }}
-      >
-        <MyAppBar />
-        <div id="top-genres">
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            margin="5%"
-            spacing={5}
-          >
-            {getTopGenresComp()}
-            {getPieChartComp()}
-          </Stack>
-        </div>
-        <Button onClick={handleDownloadImage}>Download as Image</Button>
-      </div>
-    );
-  } else {
-    return <div>Loading...</div>;
-  }
+  const loaderProps = {
+    loading,
+    size: 80,
+    duration: 1,
+    color: "#7FD485",
+  };
+
+  const checkLoadingComponents = () => {
+    if (!loading && topArtists && topArtists.length > 0) {
+      return (
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={5}>
+          {getTopGenresComp()}
+          {getPieChartComp()}
+        </Stack>
+      );
+    } else {
+      return (
+        <Stack alignItems="center">
+          <EightBitLoader {...loaderProps} />
+        </Stack>
+      );
+    }
+  };
+
+  const checkLoadingButton = () => {
+    if (!loading && topArtists && topArtists.length > 0) {
+      return (
+        <Button
+          className="see-more-button"
+          onClick={handleDownloadImage}
+          variant="outlined"
+          style={{
+            textTransform: "none",
+            borderRadius: "25px",
+            borderColor: "black",
+            color: "black",
+            fontSize: "18px",
+            fontWeight: "400",
+            paddingBlock: "2px",
+            paddingInline: "10px",
+            // width: "50%",
+            height: "fit-content",
+          }}
+          sx={{
+            bgcolor: "#7FD485",
+            whiteSpace: "auto",
+            "&:hover": {
+              backgroundColor: "#6cbd72",
+            },
+          }}
+        >
+          Download as Image
+        </Button>
+      );
+    } else {
+      return <></>;
+    }
+  };
+
+  return (
+    <div
+      style={{
+        height: "100%",
+        width: "100%",
+        position: "absolute",
+        marginBottom: "5%",
+      }}
+    >
+      <MyAppBar />
+      <Stack spacing={5} margin="5%">
+        <Stack alignItems="center">
+          {getTimeRangeButtons(
+            handleAllTimeClick,
+            handleSixMonthClick,
+            handleFourWeeksClick
+          )}
+        </Stack>
+        <div id="top-genres">{checkLoadingComponents()}</div>
+      </Stack>
+      {checkLoadingButton()}
+    </div>
+  );
 }

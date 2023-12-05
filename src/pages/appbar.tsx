@@ -36,7 +36,14 @@ export default function MyAppBar() {
   return (
     <>
       <div style={{ alignSelf: "start", width: "100%" }}>
-        <h1 style={{ marginInline: "7%", textAlign: "left" }}>Statify</h1>
+        <h1
+          style={{ marginInline: "7%", textAlign: "left" }}
+          onClick={() => {
+            navigate("/main");
+          }}
+        >
+          Statify
+        </h1>
       </div>
       <Box sx={{ borderBottom: 1.5, borderColor: "black", width: "100%" }} />
       <Stack

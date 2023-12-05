@@ -219,10 +219,6 @@ export default function Main() {
 
   const getTopArtistsComp = () => {
     console.log("topArtists:", topArtists);
-    // const url = topArtists.slice(0, 5).map((artist) => (
-    //   artist.image
-
-    // ))
     return (
       <>
         <Box className="main-boxes">

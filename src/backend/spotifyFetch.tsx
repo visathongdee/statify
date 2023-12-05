@@ -2,6 +2,7 @@ export type Artist = {
   name: string;
   genres: string[];
   images: [{ url: "src/assets/spotify icon.png" }];
+  popularity: number;
 };
 
 export type Track = {
@@ -9,6 +10,7 @@ export type Track = {
   name: string;
   artists: Artist[];
   album: { images: [{ url: "src/assets/spotify icon.png" }] };
+  popularity: number;
 };
 
 export type Genres = {
