@@ -14,6 +14,8 @@ import {
 import PieChart from "./pieChart";
 import { ArtistGenre } from "./pieChart";
 import MyAppBar from "./appbar";
+import { getTitleBox } from "./artists";
+import { topTracksStack } from "./main";
 
 import { ChartData as ChartJsData } from "chart.js";
 
@@ -76,112 +78,13 @@ export default function Tracks() {
     if (!loading && topTracks && topTracks.length > 0) {
       return (
         <Box className="main-boxes">
-          <Box className="main-title-box">
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              spacing={5}
-            >
-              <h1 className="card-text-title">Top Tracks</h1>
-              <Button
-                className="see-more-button"
-                onClick={handleAllTimeClick}
-                variant="outlined"
-                style={{
-                  textTransform: "none",
-                  borderRadius: "25px",
-                  borderColor: "black",
-                  color: "black",
-                  fontSize: "18px",
-                  fontWeight: "400",
-                  paddingBlock: "2px",
-                  paddingInline: "10px",
-                  width: "50%",
-                }}
-                sx={{
-                  bgcolor: "#7FD485",
-                  "&:hover": {
-                    backgroundColor: "#6cbd72",
-                  },
-                }}
-              >
-                All Time
-              </Button>
-              <Button
-                className="see-more-button"
-                onClick={handleSixMonthClick}
-                variant="outlined"
-                style={{
-                  textTransform: "none",
-                  borderRadius: "25px",
-                  borderColor: "black",
-                  color: "black",
-                  fontSize: "18px",
-                  fontWeight: "400",
-                  paddingBlock: "2px",
-                  paddingInline: "10px",
-                  width: "50%",
-                }}
-                sx={{
-                  bgcolor: "#7FD485",
-                  "&:hover": {
-                    backgroundColor: "#6cbd72",
-                  },
-                }}
-              >
-                6 Months
-              </Button>
-              <Button
-                className="see-more-button"
-                onClick={handleFourWeeksClick}
-                variant="outlined"
-                style={{
-                  textTransform: "none",
-                  borderRadius: "25px",
-                  borderColor: "black",
-                  color: "black",
-                  fontSize: "18px",
-                  fontWeight: "400",
-                  paddingBlock: "2px",
-                  paddingInline: "10px",
-                  width: "50%",
-                }}
-                sx={{
-                  bgcolor: "#7FD485",
-                  "&:hover": {
-                    backgroundColor: "#6cbd72",
-                  },
-                }}
-              >
-                4 Weeks
-              </Button>
-            </Stack>
-          </Box>
-          <Stack
-            direction="column"
-            alignItems="space-between"
-            justifyContent="space-between"
-            spacing={2}
-            className="card-content-stack"
-          >
-            {topTracks.map((track) => (
-              <div style={{ alignSelf: "start", width: "100%" }}>
-                <Stack
-                  key={track.name}
-                  direction="column"
-                  alignItems="start"
-                  justifyContent="start"
-                  spacing={1}
-                >
-                  <h2 className="card-text-content">{track.name}</h2>
-                  <h3 className="card-subtext-content">
-                    {track.artists.map((artist) => artist.name).join(", ")}
-                  </h3>
-                </Stack>
-              </div>
-            ))}
-          </Stack>
+          {getTitleBox(
+            "Top Tracks",
+            handleAllTimeClick,
+            handleSixMonthClick,
+            handleFourWeeksClick
+          )}
+          {topTracksStack(topTracks, 20)}
         </Box>
       );
     } else {

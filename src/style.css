@@ -40,7 +40,7 @@ h3 {
   border-color: black;
   width: 100%;
   /* margin-top: 5%; */
-  margin: 5%;
+  /* margin: 5%; */
   overflow: visible;
 }
 
@@ -83,20 +83,28 @@ h3 {
 
 .card-text-title {
   font-size: 1.5em;
-  text-align: left;
+  /* text-align: left; */
   width: 100%;
   white-space: nowrap;
+  margin: 0%;
 }
 
 .card-text-content {
+  /* margin-inline: 10%; */
   font-size: 1.25em;
   text-align: left;
   width: 100%;
-  margin: 5%;
+  margin: 0%;
 }
 
 .card-subtext-content {
   font-size: 1em;
   text-align: left;
   color: gray;
+}
+
+.profile-image {
+  /* width: fit-content; */
+  width: 15%;
+  border-radius: 50%;
 }

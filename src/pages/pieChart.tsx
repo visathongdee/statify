@@ -20,7 +20,7 @@ const PieChart: React.FC<PiChartProps> = ({
   artistToGenres = [],
 }) => {
   return (
-    <div>
+    <div style={{ margin: "5%" }}>
       {chartData && (
         <Pie
           className="pie-chart"
@@ -29,7 +29,7 @@ const PieChart: React.FC<PiChartProps> = ({
             plugins: {
               title: {
                 display: true,
-                text: "Your Top Genres",
+                // text: "Your Top Genres",
                 color: "#000000",
               },
               legend: {

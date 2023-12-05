@@ -1,12 +1,14 @@
 export type Artist = {
   name: string;
   genres: string[];
+  images: [{ url: "src/assets/spotify icon.png" }];
 };
 
 export type Track = {
   id: string;
   name: string;
   artists: Artist[];
+  album: { images: [{ url: "src/assets/spotify icon.png" }] };
 };
 
 export type Genres = {
@@ -23,7 +25,6 @@ export type SpotifyApiArtistsResponse = {
 
 async function fetchWebApi(endpoint: string, method: string): Promise<any> {
   let token = localStorage.getItem("access_token");
-  console.log("token:", token);
   const res = await fetch(`https://api.spotify.com/${endpoint}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -35,12 +36,9 @@ async function fetchWebApi(endpoint: string, method: string): Promise<any> {
 
 export async function getTopTracks(timeRange: string): Promise<Track[]> {
   const response: SpotifyApiTracksResponse = await fetchWebApi(
-    "v1/me/top/tracks?time_range=long_term",
-    // `v1/me/top/tracks?time_range=${timeRange}`,
+    `v1/me/top/tracks?time_range=${timeRange}`,
     "GET"
   );
-
-  //   console.log(response.items);
   return response.items;
 }
 
@@ -58,12 +56,10 @@ export async function logTopTracks(): Promise<void> {
 
 export async function getTopArtists(timeRange: string): Promise<Artist[]> {
   const response: SpotifyApiArtistsResponse = await fetchWebApi(
-    // "v1/me/top/artists?time_range=long_term&limit=5",
     `v1/me/top/artists?time_range=${timeRange}`,
-    // "v1/me/top/artists?time_range=medium_term&limit=5",
     "GET"
   );
-  console.log(response.items);
+
   return response.items;
 }
 

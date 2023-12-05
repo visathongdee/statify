@@ -25,6 +25,79 @@ import { ChartData as ChartJsData } from "chart.js";
 
 type ChartData = ChartJsData<"pie", number[], string>;
 
+export const topArtistStack = (topArtists: Artist[], limit: number) => {
+  return (
+    <Stack
+      direction="column"
+      justifyContent="space-between"
+      className="card-content-stack"
+      spacing={2}
+    >
+      {topArtists.slice(0, limit).map((artist) => (
+        <div style={{ alignSelf: "start", width: "100%" }}>
+          <Stack
+            key={artist.name}
+            direction="row"
+            alignItems="center"
+            justifyContent="start"
+            spacing={1}
+            sx={{ height: "100%", width: "100%", textAlign: "left" }}
+          >
+            {artist.images.length > 0 && artist.images[0] && (
+              <img
+                src={artist.images[0].url}
+                alt="Artist"
+                className="profile-image"
+              />
+            )}
+            <h1 className="card-text-content" style={{ marginInline: "5%" }}>
+              {artist.name}
+            </h1>
+          </Stack>
+        </div>
+      ))}
+    </Stack>
+  );
+};
+
+export const topTracksStack = (topTracks: Track[], limit: number) => {
+  return (
+    <Stack
+      direction="column"
+      alignItems="space-between"
+      justifyContent="space-between"
+      spacing={5}
+      className="card-content-stack"
+    >
+      {topTracks.slice(0, limit).map((track) => (
+        <div style={{ alignSelf: "start", width: "100%" }}>
+          <Stack
+            key={track.name}
+            direction="row"
+            alignItems="center"
+            justifyContent="start"
+            spacing={2}
+          >
+            {track.album.images.length > 0 && track.album.images[0] && (
+              <img
+                src={track.album.images[0].url}
+                alt="Track"
+                className="profile-image"
+              />
+            )}
+            <Stack alignItems="start" spacing={0}>
+              <h2 className="card-text-content">{track.name}</h2>
+              <h3 className="card-subtext-content" style={{ margin: "0%" }}>
+                {track.artists.map((artist) => artist.name).join(", ")}
+              </h3>
+            </Stack>
+          </Stack>
+        </div>
+      ))}
+    </Stack>
+  );
+};
+
 export default function Main() {
   const navigate = useNavigate();
   const [topTracks, setTopTracks] = useState<Track[]>([]);
@@ -68,12 +141,10 @@ export default function Main() {
 
   const handleDisconnect = () => {
     let beforetoken = localStorage.getItem("access_token");
-    console.log("token:", beforetoken);
 
     localStorage.clear();
 
     let token = localStorage.getItem("access_token");
-    console.log("token:", token);
 
     console.log("disconnected");
 
@@ -111,6 +182,7 @@ export default function Main() {
               alignItems="center"
               width="100%"
               spacing={5}
+              textAlign="left"
             >
               <h1 className="card-text-title">Top Tracks of All Time</h1>
               <Button
@@ -139,42 +211,26 @@ export default function Main() {
               </Button>
             </Stack>
           </Box>
-          <Stack
-            direction="column"
-            alignItems="space-between"
-            justifyContent="space-between"
-            spacing={5}
-            className="card-content-stack"
-          >
-            {topTracks.slice(0, 5).map((track) => (
-              <div style={{ alignSelf: "start", width: "100%" }}>
-                <Stack
-                  key={track.name}
-                  direction="column"
-                  alignItems="start"
-                  justifyContent="start"
-                  spacing={1}
-                >
-                  <h2 className="card-text-content">{track.name}</h2>
-                  <h3 className="card-subtext-content">
-                    {track.artists.map((artist) => artist.name).join(", ")}
-                  </h3>
-                </Stack>
-              </div>
-            ))}
-          </Stack>
+          {topTracksStack(topTracks, 5)}
         </Box>
       </>
     );
   };
 
   const getTopArtistsComp = () => {
+    console.log("topArtists:", topArtists);
+    // const url = topArtists.slice(0, 5).map((artist) => (
+    //   artist.image
+
+    // ))
     return (
       <>
         <Box className="main-boxes">
           <Box className="main-title-box">
             <Stack className="main-title-stack" direction="row" spacing={5}>
-              <h1 className="card-text-title">Top Artists of All Time</h1>
+              <h1 className="card-text-title" style={{ textAlign: "left" }}>
+                Top Artists of All Time
+              </h1>
               <Button
                 className="see-more-button"
                 onClick={moreArtistsClick}
@@ -201,26 +257,7 @@ export default function Main() {
               </Button>
             </Stack>
           </Box>
-          <Stack
-            direction="column"
-            justifyContent="space-between"
-            className="card-content-stack"
-          >
-            {topArtists.slice(0, 5).map((artist) => (
-              <div style={{ alignSelf: "start", width: "100%" }}>
-                <Stack
-                  key={artist.name}
-                  direction="column"
-                  alignItems="start"
-                  justifyContent="start"
-                  spacing={1}
-                  sx={{ height: "100%", width: "100%", textAlign: "left" }}
-                >
-                  <h2 className="card-text-content">{artist.name}</h2>
-                </Stack>
-              </div>
-            ))}
-          </Stack>
+          {topArtistStack(topArtists, 5)}
         </Box>
       </>
     );

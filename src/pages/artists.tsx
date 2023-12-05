@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Stack, Button, Box } from "@mui/material";
+import { Stack, Button, Box, Grid } from "@mui/material";
 import "../style.css";
 import SpotifyIcon from "../assets/spotify icon.png";
 import { useEffect, useState } from "react";
@@ -14,10 +14,70 @@ import {
 import PieChart from "./pieChart";
 import { ArtistGenre } from "./pieChart";
 import MyAppBar from "./appbar";
+import { topArtistStack } from "./main";
 
 import { ChartData as ChartJsData } from "chart.js";
 
 type ChartData = ChartJsData<"pie", number[], string>;
+
+export const getTimeRangeButton = (
+  clickFunction: React.MouseEventHandler<HTMLButtonElement> | undefined,
+  label: string
+) => {
+  return (
+    <Button
+      className="see-more-button"
+      onClick={clickFunction}
+      variant="outlined"
+      style={{
+        textTransform: "none",
+        borderRadius: "25px",
+        borderColor: "black",
+        color: "black",
+        fontSize: "18px",
+        fontWeight: "400",
+        paddingBlock: "2px",
+        paddingInline: "10px",
+        width: "50%",
+        height: "fit-content",
+      }}
+      sx={{
+        bgcolor: "#7FD485",
+        whiteSpace: "auto",
+        "&:hover": {
+          backgroundColor: "#6cbd72",
+        },
+      }}
+    >
+      {label}
+    </Button>
+  );
+};
+
+export const getTitleBox = (
+  title: string,
+  handleAllTimeClick: React.MouseEventHandler<HTMLButtonElement> | undefined,
+  handleSixMonthClick: React.MouseEventHandler<HTMLButtonElement> | undefined,
+  handleFourWeeksClick: React.MouseEventHandler<HTMLButtonElement> | undefined
+) => {
+  return (
+    <Box className="main-title-box">
+      <Stack
+        className="main-title-stack"
+        direction={{ xs: "column", sm: "row" }}
+        spacing={5}
+        textAlign={{ xs: "center", sm: "left" }}
+      >
+        <h1 className="card-text-title">{title}</h1>
+        <Stack direction="row" spacing={2} sx={{ whiteSpace: "wrap" }}>
+          {getTimeRangeButton(handleAllTimeClick, "All Time")}
+          {getTimeRangeButton(handleSixMonthClick, "6 Months")}
+          {getTimeRangeButton(handleFourWeeksClick, "4 Weeks")}
+        </Stack>
+      </Stack>
+    </Box>
+  );
+};
 
 export default function Artists() {
   const [topTracks, setTopTracks] = useState<Track[]>([]);
@@ -77,84 +137,14 @@ export default function Artists() {
       return (
         <>
           <Box className="main-boxes">
-            <Box className="main-title-box">
-              <Stack className="main-title-stack" direction="row" spacing={5}>
-                <h1 className="card-text-title">Top Artists</h1>
-                <Button
-                  className="see-more-button"
-                  onClick={handleAllTimeClick}
-                  variant="outlined"
-                  style={{
-                    textTransform: "none",
-                    borderRadius: "25px",
-                    borderColor: "black",
-                    color: "black",
-                    fontSize: "18px",
-                    fontWeight: "400",
-                    paddingBlock: "2px",
-                    paddingInline: "10px",
-                    width: "50%",
-                  }}
-                  sx={{
-                    bgcolor: "#7FD485",
-                    "&:hover": {
-                      backgroundColor: "#6cbd72",
-                    },
-                  }}
-                >
-                  All Time
-                </Button>
-                <Button
-                  className="see-more-button"
-                  onClick={handleSixMonthClick}
-                  variant="outlined"
-                  style={{
-                    textTransform: "none",
-                    borderRadius: "25px",
-                    borderColor: "black",
-                    color: "black",
-                    fontSize: "18px",
-                    fontWeight: "400",
-                    paddingBlock: "2px",
-                    paddingInline: "10px",
-                    width: "50%",
-                  }}
-                  sx={{
-                    bgcolor: "#7FD485",
-                    "&:hover": {
-                      backgroundColor: "#6cbd72",
-                    },
-                  }}
-                >
-                  6 Months
-                </Button>
-                <Button
-                  className="see-more-button"
-                  onClick={handleFourWeeksClick}
-                  variant="outlined"
-                  style={{
-                    textTransform: "none",
-                    borderRadius: "25px",
-                    borderColor: "black",
-                    color: "black",
-                    fontSize: "18px",
-                    fontWeight: "400",
-                    paddingBlock: "2px",
-                    paddingInline: "10px",
-                    width: "50%",
-                  }}
-                  sx={{
-                    bgcolor: "#7FD485",
-                    "&:hover": {
-                      backgroundColor: "#6cbd72",
-                    },
-                  }}
-                >
-                  4 Weeks
-                </Button>
-              </Stack>
-            </Box>
-            <Stack
+            {getTitleBox(
+              "Top Artists",
+              handleAllTimeClick,
+              handleSixMonthClick,
+              handleFourWeeksClick
+            )}
+            {topArtistStack(topArtists, 20)}
+            {/* <Stack
               direction="column"
               justifyContent="space-between"
               className="card-content-stack"
@@ -173,12 +163,12 @@ export default function Artists() {
                   </Stack>
                 </div>
               ))}
-            </Stack>
+            </Stack> */}
           </Box>
         </>
       );
     } else {
-      return <div>Loading...</div>;
+      return <div>Loading</div>;
     }
   };
 

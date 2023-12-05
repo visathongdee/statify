@@ -53,7 +53,7 @@ export default function MyAppBar() {
             textTransform: "none",
             color: "black",
             fontSize: "18px",
-            fontWeight: "400",
+            fontWeight: "500",
             paddingInline: "7%",
           }}
         >
@@ -66,7 +66,7 @@ export default function MyAppBar() {
             textTransform: "none",
             color: "black",
             fontSize: "18px",
-            fontWeight: "400",
+            fontWeight: "500",
             paddingInline: "7%",
           }}
         >
@@ -79,7 +79,7 @@ export default function MyAppBar() {
             textTransform: "none",
             color: "black",
             fontSize: "18px",
-            fontWeight: "400",
+            fontWeight: "500",
             paddingInline: "7%",
           }}
         >
