@@ -12,7 +12,7 @@ export default function Home() {
     navigate("/main");
   };
 
-  const CLIENT_ID = "9797af3724404b738831c7e11d1ad817";
+  const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
   const REDIRECT_URI = "http://localhost:3000/main";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
   const RESPONSE_TYPE = "token";
@@ -31,15 +31,6 @@ export default function Home() {
       window.location.href = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=${SCOPES_URL}&response_type=${RESPONSE_TYPE}&show_dialog=true`;
     }, 1500);
   };
-
-  // useEffect(() => {
-  //   const code = new URLSearchParams(window.location.search).get('code');
-
-  //   if (code) {
-  //     // Exchange the code for a token
-  //     getToken(code);
-  //   }
-  // }, []);
 
   return (
     <div className="centered">
